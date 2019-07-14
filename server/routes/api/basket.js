@@ -12,10 +12,22 @@ router.get('/', async (req, res) => {
 // Add item
 router.post('/', async (req, res) => {
   const basket = await loadBasketItems();
-  await basket.insertOne({
-    quantity: req.body.quantity,
-    price: req.body.price
+  const item = await basket.findOne({
+    name: req.body.name
   });
+  if (item) {
+    await basket.update(
+      { _id: item._id },
+      { $set: { quantity: item.quantity + 1 } }
+    );
+  } else {
+    await basket.insertOne({
+      name: req.body.name,
+      image: req.body.image,
+      price: req.body.price,
+      quantity: 1
+    });
+  }  
   res.status(201).send();
 });
 
