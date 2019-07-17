@@ -8,9 +8,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const basket = require('./routes/api/basket');
+const store = require('./routes/api/store');
 
-app.use('/api/basket', basket);
+app.use('/api', store);
 
 // Handle production
 if (process.env.NODE_ENV === 'production') {
